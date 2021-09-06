@@ -11,6 +11,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,17 +31,21 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-Button ButtonCapture,ButtonCopy;
+Button ButtonCapture,ButtonCopy,ButtonHistory;
 TextView textViewData;
 Bitmap bitmap;
+MyDataBaseHelper myDataBaseHelper;
 private static final int REQUEST_CAMERA_CODE=100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButtonCapture=findViewById(R.id.button_Capture);
+        ButtonHistory=findViewById(R.id.button_history);
         ButtonCopy=findViewById(R.id.button_copy);
         textViewData=findViewById(R.id.text_data);
+        myDataBaseHelper = new MyDataBaseHelper(this);
+        SQLiteDatabase sqLiteDatabase = myDataBaseHelper.getWritableDatabase();
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
 
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{
@@ -58,7 +63,25 @@ private static final int REQUEST_CAMERA_CODE=100;
             public void onClick(View v) {
                 String scanned_Text = textViewData.getText().toString();
                 copytoClipboard(scanned_Text);
+                if(v.getId()==R.id.button_copy)
+                {
+                    long rowID = myDataBaseHelper.insertData(scanned_Text);
+                if(rowID==-1){
+                    Toast.makeText(MainActivity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
 
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Row "+rowID+"is Successfully inserted", Toast.LENGTH_SHORT).show();
+                }
+                }
+
+            }
+        });
+        ButtonHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,ShowData.class);
+                startActivity(intent);
             }
         });
     }
@@ -98,6 +121,9 @@ private static final int REQUEST_CAMERA_CODE=100;
             textViewData.setText(stringBuilder.toString());
             ButtonCapture.setText("Retake");
             ButtonCopy.setVisibility(View.VISIBLE);
+            ButtonHistory.setVisibility(View.VISIBLE);
+
+
         }
     }
 private void copytoClipboard(String text){
