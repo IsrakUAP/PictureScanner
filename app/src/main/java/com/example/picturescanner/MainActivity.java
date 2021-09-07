@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -65,17 +66,31 @@ private static final int REQUEST_CAMERA_CODE=100;
             public void onClick(View v) {
                 String scanned_Text = textViewData.getText().toString();
                 copytoClipboard(scanned_Text);
-                if(v.getId()==R.id.button_copy)
-                {
-                    long rowID = myDataBaseHelper.insertData(scanned_Text);
-                if(rowID==-1){
-                    Toast.makeText(MainActivity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("text",textViewData.getText().toString());
 
+                SQLiteDatabase sqLiteDatabase = myDataBaseHelper.getReadableDatabase();
+                Long recid = sqLiteDatabase.insert("thing",null,contentValues);
+                if(recid!=null){
+
+                    Toast.makeText(MainActivity.this, "Data inserted successfully", Toast.LENGTH_SHORT).show();
+//                    clear();
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "Row "+rowID+"is Successfully inserted", Toast.LENGTH_SHORT).show();
+                else {
+
+                    Toast.makeText(MainActivity.this, "Something is Wrong pls try again ", Toast.LENGTH_SHORT).show();
                 }
-                }
+//                if(v.getId()==R.id.button_copy)
+//                {
+//                    long rowID = myDataBaseHelper.(scanned_Text);
+//                if(rowID==-1){
+//                    Toast.makeText(MainActivity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
+//
+//                }
+//                else{
+//                    Toast.makeText(MainActivity.this, "Row "+rowID+"is Successfully inserted", Toast.LENGTH_SHORT).show();
+//                }
+//                }
 
             }
         });
@@ -86,30 +101,30 @@ private static final int REQUEST_CAMERA_CODE=100;
                 Intent intent = new Intent(MainActivity.this,ShowData.class);
 //
                 startActivity(intent);
-                if(v.getId()==R.id.button_history){
-                    Cursor cursor = myDataBaseHelper.displayalldata();
-                    if(cursor.getCount()==0){
-                        showData("Error","No data");
-                        return;
-                    }
-                    StringBuffer stringBuffer = new StringBuffer();
-                    while(cursor.moveToNext())
-                    {
-                        stringBuffer.append("ID" + cursor.getString(0)+"\n");
-                        stringBuffer.append("TEXT" + cursor.getString(1)+"\n");
-                    }
-                showData("Resultset",stringBuffer.toString());
-                }
+//                if(v.getId()==R.id.button_history){
+//                    Cursor cursor = myDataBaseHelper.displayalldata();
+//                    if(cursor.getCount()==0){
+//                        showData("Error","No data");
+//                        return;
+//                    }
+//                    StringBuffer stringBuffer = new StringBuffer();
+//                    while(cursor.moveToNext())
+//                    {
+//                        stringBuffer.append("ID" + cursor.getString(0)+"\n");
+//                        stringBuffer.append("TEXT" + cursor.getString(1)+"\n");
+//                    }
+//                showData("Resultset",stringBuffer.toString());
+//                }
             }
 
-            public void showData(String resultset, String toString) {
-                AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle(resultset);
-                builder.setMessage(toString);
-                builder.setCancelable(true);
-                builder.show();
-
-            }
+//            public void showData(String resultset, String toString) {
+//                AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+//                builder.setTitle(resultset);
+//                builder.setMessage(toString);
+//                builder.setCancelable(true);
+//                builder.show();
+//
+//            }
         });
     }
 
