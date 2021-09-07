@@ -1,6 +1,7 @@
 package com.example.picturescanner;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -13,10 +14,11 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     private static final String ID = "_id";
     private static final String TEXT = "text";
     private static final int VERSION_NUMBER = 1;
-    private static final String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+"("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+TEXT+" VARCHAR(255));";
+    private static final String CREATE_TABLE = "CREATE TABLE "+TABLE_NAME+"("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+TEXT+" VARCHAR(255));";
+    private static final String SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
     private Context context;
     public MyDataBaseHelper(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, VERSION_NUMBER);
+        super(context, DATABASE_NAME, null, 4);
         this.context = context;
     }
 
@@ -41,5 +43,11 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
        contentValues.put(TEXT,text);
        long rowid= sqLiteDatabase.insert(TABLE_NAME,null,contentValues);
        return rowid;
+   }
+  public Cursor displayalldata(){
+
+       SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+      Cursor cursor = sqLiteDatabase.rawQuery(SELECT_ALL,null);
+      return cursor;
    }
 }

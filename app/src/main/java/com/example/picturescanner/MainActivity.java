@@ -1,6 +1,7 @@
 package com.example.picturescanner;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,6 +12,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -80,8 +82,33 @@ private static final int REQUEST_CAMERA_CODE=100;
         ButtonHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String sr = ButtonHistory.getText().toString();
                 Intent intent = new Intent(MainActivity.this,ShowData.class);
+//
                 startActivity(intent);
+                if(v.getId()==R.id.button_history){
+                    Cursor cursor = myDataBaseHelper.displayalldata();
+                    if(cursor.getCount()==0){
+                        showData("Error","No data");
+                        return;
+                    }
+                    StringBuffer stringBuffer = new StringBuffer();
+                    while(cursor.moveToNext())
+                    {
+                        stringBuffer.append("ID" + cursor.getString(0)+"\n");
+                        stringBuffer.append("TEXT" + cursor.getString(1)+"\n");
+                    }
+                showData("Resultset",stringBuffer.toString());
+                }
+            }
+
+            public void showData(String resultset, String toString) {
+                AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(resultset);
+                builder.setMessage(toString);
+                builder.setCancelable(true);
+                builder.show();
+
             }
         });
     }
@@ -132,5 +159,4 @@ private void copytoClipboard(String text){
     clipboardManager.setPrimaryClip(clipData);
     Toast.makeText(MainActivity.this, "Copied to ClipBoard", Toast.LENGTH_SHORT).show();
 }
-
 }
