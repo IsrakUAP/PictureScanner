@@ -16,12 +16,13 @@
         android:id="@+id/text_data"
         android:layout_width="match_parent"
         android:textColor="@color/black"
-        android:text="Convert image to text"
+        android:drawableTop="@drawable/ic_baseline_text_snippet_24"
         android:textSize="22sp"
         android:textStyle="italic"
         android:layout_height="wrap_content"/>
 </ScrollView>
 <LinearLayout
+    android:background="@color/black"
     android:id="@+id/linear_holder"
     android:layout_alignParentBottom="true"
     android:layout_width="match_parent"
@@ -30,9 +31,9 @@
     android:layout_width="0dp"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:text="Capture"
-    android:textSize="20sp"
+    android:drawableTop="@drawable/ic_baseline_filter_center_focus_24"
     android:id="@+id/button_Capture"
+    android:background="@color/black"
     android:layout_margin="8dp"
     />
     <Button
@@ -40,8 +41,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="CopyText"
         android:textSize="20sp"
+        android:drawableTop="@drawable/ic_baseline_file_copy_24"
         android:id="@+id/button_copy"
         android:layout_margin="8dp"
         />
@@ -49,7 +50,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="History"
+        android:drawableTop="@drawable/ic_baseline_history_24"
+
         android:textSize="20sp"
         android:id="@+id/button_history"
         android:layout_margin="8dp"

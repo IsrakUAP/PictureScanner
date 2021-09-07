@@ -22,6 +22,8 @@ import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +36,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-Button ButtonCapture,ButtonCopy,ButtonHistory;
+  Button ButtonCapture,ButtonCopy,ButtonHistory;
 TextView textViewData;
 Bitmap bitmap;
 MyDataBaseHelper myDataBaseHelper;
@@ -74,23 +76,11 @@ private static final int REQUEST_CAMERA_CODE=100;
                 if(recid!=null){
 
                     Toast.makeText(MainActivity.this, "Data inserted successfully", Toast.LENGTH_SHORT).show();
-//                    clear();
                 }
                 else {
 
                     Toast.makeText(MainActivity.this, "Something is Wrong pls try again ", Toast.LENGTH_SHORT).show();
                 }
-//                if(v.getId()==R.id.button_copy)
-//                {
-//                    long rowID = myDataBaseHelper.(scanned_Text);
-//                if(rowID==-1){
-//                    Toast.makeText(MainActivity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
-//
-//                }
-//                else{
-//                    Toast.makeText(MainActivity.this, "Row "+rowID+"is Successfully inserted", Toast.LENGTH_SHORT).show();
-//                }
-//                }
 
             }
         });
@@ -99,32 +89,10 @@ private static final int REQUEST_CAMERA_CODE=100;
             public void onClick(View v) {
                 String sr = ButtonHistory.getText().toString();
                 Intent intent = new Intent(MainActivity.this,ShowData.class);
-//
                 startActivity(intent);
-//                if(v.getId()==R.id.button_history){
-//                    Cursor cursor = myDataBaseHelper.displayalldata();
-//                    if(cursor.getCount()==0){
-//                        showData("Error","No data");
-//                        return;
-//                    }
-//                    StringBuffer stringBuffer = new StringBuffer();
-//                    while(cursor.moveToNext())
-//                    {
-//                        stringBuffer.append("ID" + cursor.getString(0)+"\n");
-//                        stringBuffer.append("TEXT" + cursor.getString(1)+"\n");
-//                    }
-//                showData("Resultset",stringBuffer.toString());
-//                }
+
             }
 
-//            public void showData(String resultset, String toString) {
-//                AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
-//                builder.setTitle(resultset);
-//                builder.setMessage(toString);
-//                builder.setCancelable(true);
-//                builder.show();
-//
-//            }
         });
     }
 
